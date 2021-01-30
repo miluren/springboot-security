@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>index</h1>
+
+<!--  如果未登录  -->
+    <div sec:authorize="!isAuthenticated()">
+        请登录
+    </div>
+
+    <!--  如果登录  -->
+    <div sec:authorize="isAuthenticated()">
+        <a class="item">
+            用户名: <span sec:authentication="name"></span>
+<!--            使用下面这行代码会出错，目前角色功能不可用    -->
+<!--            角色: <span sec:authentication="principal.getAuthorities()"></span>-->
+        </a>
+        <!--  菜单根据用户的角色动态的实现  -->
+        <div sec:authorize="hasRole('vip1')">
+            <a href="/level1/1">1</a>
+            <a href="/level1/2">2</a>
+            <a href="/level1/3">3</a>
+        </div>
+        <div sec:authorize="hasRole('vip2')">
+            <a href="/level2/1">1</a>
+            <a href="/level2/2">2</a>
+            <a href="/level2/3">3</a>
+        </div>
+        <div sec:authorize="hasRole('vip3')">
+            <a href="/level3/1">1</a>
+            <a href="/level3/2">2</a>
+            <a href="/level3/3">3</a>
+        </div>
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <a class="item" th:href="@{/logout}">注销</a>
+    </div>
+
+</body>
+</html>
